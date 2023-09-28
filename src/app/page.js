@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import React, { useState, useEffect } from "react"
 import {
   Button,
@@ -10,9 +9,238 @@ import {
   Typography,
   Alert,
 } from "@mui/material"
-import { styled } from "@mui/material/styles"
+
 import StyledButton from "@/components/Button"
 import CssTextField from "@/components/TextField"
+
+const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
+  // if (A < 0) {
+  //   alert("Please enter a valid positive A .")
+  //   return
+  // }
+
+  // if (a < 0) {
+  //   alert("Please enter a valid positive a .")
+  //   return
+  // }
+
+  // if (b < 0) {
+  //   alert("Please enter a valid positive b .")
+  //   return
+  // }
+
+  // if (C < 0) {
+  //   alert("Please enter a valid positive C .")
+  //   return
+  // }
+
+  // if (z0 < 0) {
+  //   alert("Please enter a valid positive z0 .")
+  //   return
+  // }
+
+  // if (M < 0) {
+  //   alert("Please enter a valid positive M .")
+  //   return
+  // }
+
+  const [tableData, setTableData] = useState([])
+  const [tableGenerated, setTableGenerated] = useState(false)
+  const generateTableData = () => {
+    const data = []
+    let Z = z0
+
+    for (let i = 1; i <= Length.TableLength; i++) {
+      const R = (A * Z + C) % M
+      const randomNumber = Math.random()
+      const Y = (b - a) * randomNumber + a
+      data.push({ serialNo: i, Z, R, randomNumber, Y })
+      Z = R
+    }
+
+    setTableData(data)
+    setTableGenerated(true)
+  }
+
+  // useEffect(() => {
+  //   const generateTableData = () => {
+  //     const data = []
+  //     let Z = z0
+  //     console.log("Length = ", Length.TableLength)
+  //     for (let i = 1; i <= Length; i++) {
+  //       const R = (A * Z + C) % M
+  //       const randomNumber = Math.random()
+  //       const Y = ((b - a) * randomNumber + a).toFixed(1)
+  //       data.push({ serialNo: i, Z, R, randomNumber, Y })
+  //       Z = R
+  //     }
+
+  //     setTableData(data)
+  //   }
+
+  // }, [A, a, b, z0, M, C])
+
+  return (
+    <div>
+      <div className=" flex justify-center  items-center">
+        <StyledButton
+          onClick={generateTableData}
+          color="#004021"
+          background="#076638"
+        >
+          Submit
+        </StyledButton>
+      </div>
+
+      {tableGenerated && (
+        <>
+          <h1 className="text-2xl font-medium">Priority Table</h1>
+          <table className="w-full mt-4 mb-7 text-left">
+            <thead>
+              <tr>
+                <th className="px-4">Serial No</th>
+                <th className="px-4">Z iteration</th>
+                <th className="px-4">R</th>
+                <th className="px-4">Random Number</th>
+                <th className="px-4">Y</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map(row => (
+                <tr key={row.serialNo}>
+                  <td className="px-4">{row.serialNo}</td>
+                  <td className="px-4">{row.Z}</td>
+                  <td className="px-4">{row.R}</td>
+                  <td className="px-4">{row.randomNumber.toFixed(6)}</td>
+                  <td className="px-4">{row.Y.toFixed(1)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
+  )
+}
+
+function Priority(TableLength) {
+  const [A, setA] = useState(0)
+  const [a, seta] = useState(0)
+  const [b, setb] = useState(0)
+  const [z0, setz0] = useState(0)
+  const [M, setM] = useState(0)
+  const [C, setC] = useState(0)
+
+  const handleA = e => {
+    setA(parseFloat(e.target.value))
+  }
+
+  const handleb = e => {
+    setb(e.target.value)
+  }
+
+  const handlea = e => {
+    seta(e.target.value)
+  }
+
+  const handleC = e => {
+    setC(e.target.value)
+  }
+
+  const handleM = e => {
+    setM(e.target.value)
+  }
+
+  const handleZ0 = e => {
+    setz0(e.target.value)
+  }
+
+  return (
+    <>
+      <h1 className="text-2xl font-medium">Priority Inputs</h1>
+
+      <div className=" flex font-medium space-x-12 ">
+        <div className=" flex-col ">
+          <CssTextField
+            label="A"
+            variant="outlined"
+            type="number"
+            value={A}
+            onChange={handleA}
+          />
+          <p>A</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="M"
+            variant="outlined"
+            type="number"
+            value={M}
+            onChange={handleM}
+          />
+          <p>M</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="Z0"
+            variant="outlined"
+            type="number"
+            value={z0}
+            onChange={handleZ0}
+          />
+          <p>Z0</p>
+        </div>
+      </div>
+
+      <div className=" flex font-medium space-x-12 ">
+        <div className=" flex-col ">
+          <CssTextField
+            label="C"
+            variant="outlined"
+            type="number"
+            value={C}
+            onChange={handleC}
+          />
+          <p>C</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="a"
+            variant="outlined"
+            type="number"
+            value={a}
+            onChange={handlea}
+          />
+          <p>a</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="b"
+            variant="outlined"
+            type="number"
+            value={b}
+            onChange={handleb}
+          />
+          <p>b</p>
+        </div>
+      </div>
+
+      <PriorityTable
+        A={A}
+        a={a}
+        b={b}
+        z0={z0}
+        M={M}
+        C={C}
+        Length={TableLength}
+      />
+    </>
+  )
+}
 
 export default function Home() {
   const [arrivalRate, setArrivalRate] = useState(0)
@@ -116,16 +344,20 @@ export default function Home() {
     setutilizationFactor(parseFloat(arrivalRate) / parseFloat(serviceRate))
 
     // Calculate Average Time a Customer Spends in the System (W)
-    setavgTimeInSystem(
-      utilizationFactor > 0
-        ? 1 / (parseFloat(serviceRate) - parseFloat(arrivalRate))
-        : 0
-    )
+    // setavgTimeInSystem(
+    //   utilizationFactor > 0
+    //     ? 1 / (parseFloat(serviceRate) - parseFloat(arrivalRate))
+    //     : 0
+    // )
+
+    setavgTimeInSystem(1 / (parseFloat(serviceRate) - parseFloat(arrivalRate)))
 
     // Calculate Average Time a Customer Spends Waiting in the Queue (Wq)
-    setavgTimeInQueue(
-      utilizationFactor > 0 ? avgTimeInSystem - 1 / parseFloat(serviceRate) : 0
-    )
+    // setavgTimeInQueue(
+    //   utilizationFactor > 0 ? avgTimeInSystem - 1 / parseFloat(serviceRate) : 0
+    // )
+
+    setavgTimeInQueue(avgTimeInSystem - 1 / parseFloat(serviceRate))
     // Calculate Average Number of Customers in the Queue (Lq)
     setavgCustomersInQueue(parseFloat(arrivalRate) * avgTimeInQueue)
     // Calculate Average Number of Customers in the System (L)
@@ -175,8 +407,8 @@ export default function Home() {
       <div className="flex">
         <StyledButton
           onClick={saveValues}
-          color="#003F47" // Set your desired color here
-          background="#4CC1D0" // Set your desired background here
+          color="#003F47" // hover
+          background="#006775" // after click
         >
           Save
         </StyledButton>
@@ -184,7 +416,7 @@ export default function Home() {
         <StyledButton
           onClick={generatePriorityTable}
           color="#004021"
-          background="#16C16F"
+          background="#076638"
         >
           Submit
         </StyledButton>
@@ -263,6 +495,9 @@ export default function Home() {
               <td className="px-4">{avgCustomersInSystem.toFixed(2)}</td>
             </tr>
           </table>
+          <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
+            <Priority TableLength={cpValues.length} />
+          </div>
         </div>
       )}
     </div>
