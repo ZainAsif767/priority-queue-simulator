@@ -14,36 +14,6 @@ import StyledButton from "@/components/Button"
 import CssTextField from "@/components/TextField"
 
 const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
-  // if (A < 0) {
-  //   alert("Please enter a valid positive A .")
-  //   return
-  // }
-
-  // if (a < 0) {
-  //   alert("Please enter a valid positive a .")
-  //   return
-  // }
-
-  // if (b < 0) {
-  //   alert("Please enter a valid positive b .")
-  //   return
-  // }
-
-  // if (C < 0) {
-  //   alert("Please enter a valid positive C .")
-  //   return
-  // }
-
-  // if (z0 < 0) {
-  //   alert("Please enter a valid positive z0 .")
-  //   return
-  // }
-
-  // if (M < 0) {
-  //   alert("Please enter a valid positive M .")
-  //   return
-  // }
-
   const [tableData, setTableData] = useState([])
   const [tableGenerated, setTableGenerated] = useState(false)
   const generateTableData = () => {
@@ -53,7 +23,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
     for (let i = 1; i <= Length.TableLength; i++) {
       const R = (A * Z + C) % M
       const randomNumber = Math.random()
-      const Y = (b - a) * randomNumber + a
+      const Y = Math.floor((b - a) * randomNumber + a)
       data.push({ serialNo: i, Z, R, randomNumber, Y })
       Z = R
     }
@@ -102,7 +72,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
                 <th className="px-4">Z iteration</th>
                 <th className="px-4">R</th>
                 <th className="px-4">Random Number</th>
-                <th className="px-4">Y</th>
+                <th className="px-4">Priority</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +82,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
                   <td className="px-4">{row.Z}</td>
                   <td className="px-4">{row.R}</td>
                   <td className="px-4">{row.randomNumber.toFixed(6)}</td>
-                  <td className="px-4">{row.Y.toFixed(1)}</td>
+                  <td className="px-4">{row.Y}</td>
                 </tr>
               ))}
             </tbody>
