@@ -23,8 +23,9 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
     for (let i = 1; i <= Length.TableLength; i++) {
       const R = (A * Z + C) % M
       const randomNumber = Math.random()
-      const Y = Math.floor((b - a) * randomNumber + a)
-      data.push({ serialNo: i, Z, R, randomNumber, Y })
+      const Y = (b - a) * randomNumber + a
+      const roundOff = Math.floor(Y)
+      data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
       Z = R
     }
 
@@ -73,6 +74,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
                 <th className="px-4">R</th>
                 <th className="px-4">Random Number</th>
                 <th className="px-4">Priority</th>
+                <th className="px-4">Priority Round Off</th>
               </tr>
             </thead>
             <tbody>
@@ -83,6 +85,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
                   <td className="px-4">{row.R}</td>
                   <td className="px-4">{row.randomNumber.toFixed(6)}</td>
                   <td className="px-4">{row.Y}</td>
+                  <td className="px-4">{row.roundOff}</td>
                 </tr>
               ))}
             </tbody>
