@@ -24,7 +24,7 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
       const R = (A * Z + C) % M
       const randomNumber = Math.random()
       const Y = (b - a) * randomNumber + a
-      const roundOff = Math.floor(Y)
+      const roundOff = Math.ceil(Y)
       data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
       Z = R
     }
@@ -32,24 +32,6 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
     setTableData(data)
     setTableGenerated(true)
   }
-
-  // useEffect(() => {
-  //   const generateTableData = () => {
-  //     const data = []
-  //     let Z = z0
-  //     console.log("Length = ", Length.TableLength)
-  //     for (let i = 1; i <= Length; i++) {
-  //       const R = (A * Z + C) % M
-  //       const randomNumber = Math.random()
-  //       const Y = ((b - a) * randomNumber + a).toFixed(1)
-  //       data.push({ serialNo: i, Z, R, randomNumber, Y })
-  //       Z = R
-  //     }
-
-  //     setTableData(data)
-  //   }
-
-  // }, [A, a, b, z0, M, C])
 
   return (
     <div>
