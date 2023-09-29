@@ -16,17 +16,39 @@ import CssTextField from "@/components/TextField"
 const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
   const [tableData, setTableData] = useState([])
   const [tableGenerated, setTableGenerated] = useState(false)
+
+  function mod(a, b) {
+    return ((a % b) + b) % b
+  }
+
   const generateTableData = () => {
     const data = []
     let Z = z0
 
+    const e = mod(556169139, 1994)
+    console.log("mod = ", e)
+
     for (let i = 1; i <= Length.TableLength; i++) {
-      const R = (A * Z + C) % M
+      // const R = (A * Z + C) % M
+      let R = 0
+
+      const calc1 = A * Z
+      const calc2 = parseInt(calc1) + parseInt(C)
+
+      R = mod(calc2, parseInt(M))
+
       const randomNumber = Math.random()
       const Y = (b - a) * randomNumber + a
       const roundOff = Math.ceil(Y)
       data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
       Z = R
+
+      console.log("calc2 = ", calc2)
+      console.log("M = ", parseInt(M))
+      console.log("A = ", A)
+      console.log("Z = ", Z)
+      console.log("C = ", C)
+      console.log("R = ", R)
     }
 
     setTableData(data)
