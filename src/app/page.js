@@ -15,6 +15,7 @@ import CssTextField from "@/components/TextField"
 
 const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
   const [tableData, setTableData] = useState([])
+  const [priority, setpriority] = useState([])
   const [tableGenerated, setTableGenerated] = useState(false)
 
   function mod(a, b) {
@@ -39,7 +40,8 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
 
       const randomNumber = Math.random()
       const Y = (b - a) * randomNumber + a
-      const roundOff = Math.ceil(Y)
+      const roundOff = Math.round(Y)
+
       data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
       Z = R
 
@@ -51,6 +53,8 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
       console.log("R = ", R)
     }
 
+    // console.log("roundOff", roundOff)
+    // setpriority(roundOff)
     setTableData(data)
     setTableGenerated(true)
   }
@@ -101,12 +105,12 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
 }
 
 function Priority(TableLength) {
-  const [A, setA] = useState(0)
-  const [a, seta] = useState(0)
-  const [b, setb] = useState(0)
-  const [z0, setz0] = useState(0)
-  const [M, setM] = useState(0)
-  const [C, setC] = useState(0)
+  const [A, setA] = useState(55)
+  const [a, seta] = useState(1)
+  const [b, setb] = useState(3)
+  const [z0, setz0] = useState(10112166)
+  const [M, setM] = useState(1994)
+  const [C, setC] = useState(9)
 
   const handleA = e => {
     setA(parseFloat(e.target.value))
@@ -282,7 +286,7 @@ export default function Home() {
 
     const iATime = []
     let previousArrivalTime = 0
-
+    iATime.push(0)
     for (let i = 0; i < cpLookupTable.length; i++) {
       const randomIndex = Math.floor(Math.random() * cpLookupTable.length)
       iATime.push(randomIndex)
@@ -353,7 +357,7 @@ export default function Home() {
   return (
     <div className=" flex flex-col  justify-center items-center space-y-8 mt-4">
       <div className=" justify-center">
-        <h1 className="text-3xl font-bold text-[]">M/M/2 Priority Simulator</h1>
+        <h1 className="text-3xl font-bold text-[]">M/M/1 Priority Simulator</h1>
       </div>
 
       {/* Inputs */}
@@ -432,7 +436,7 @@ export default function Home() {
             </tbody>
           </table>
 
-          <table className="w-full mt-4 mb-7 text-left">
+          {/* <table className="w-full mt-4 mb-7 text-left">
             <tr>
               <th className="text-left text-white px-4">Metric</th>
               <th className="text-white px-4">Value</th>
@@ -471,7 +475,7 @@ export default function Home() {
               </td>
               <td className="px-4">{avgCustomersInSystem.toFixed(2)}</td>
             </tr>
-          </table>
+          </table> */}
           <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
             <Priority TableLength={cpValues.length} />
           </div>
