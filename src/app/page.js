@@ -53,8 +53,6 @@ const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
       console.log("R = ", R)
     }
 
-    // console.log("roundOff", roundOff)
-    // setpriority(roundOff)
     setTableData(data)
     setTableGenerated(true)
   }
@@ -232,6 +230,8 @@ export default function Home() {
   const [arrivalTimes, setArrivalTimes] = useState([])
   const [serviceTimes, setServiceTimes] = useState([])
   const [tableGenerated, setTableGenerated] = useState(false)
+  const [shouldGeneratePriorityTable, setShouldGeneratePriorityTable] =
+    useState(false)
 
   const [utilizationFactor, setutilizationFactor] = useState(0)
   const [avgTimeInSystem, setavgTimeInSystem] = useState(0)
@@ -241,18 +241,20 @@ export default function Home() {
 
   const handleArrivalRateChange = e => {
     setArrivalRate(e.target.value)
+    saveValues()
   }
   const handleServiceRateChange = e => {
     setServiceRate(e.target.value)
+    saveValues()
   }
 
-  const saveValues = () => {
+  const saveValues = async () => {
     return new Promise((resolve, reject) => {
       const lambda = parseFloat(arrivalRate)
-      if (isNaN(lambda) || lambda <= 0) {
-        alert("Please enter a valid positive arrival rate (λ).")
-        return
-      }
+      // if (isNaN(lambda) || lambda <= 0) {
+      //   alert("Please enter a valid positive arrival rate (λ).")
+      //   return
+      // }
 
       let x = 0
       let cumulativeProbability = 0
@@ -274,10 +276,14 @@ export default function Home() {
       setCpValues(calculatedCpValues)
       setCpLookupTable(calculatedCpLookupTable)
       resolve()
+      setShouldGeneratePriorityTable(true)
     })
   }
 
   const generatePriorityTable = async () => {
+    // if (!shouldGeneratePriorityTable) {
+    //   return
+    // }
     const lambda = parseFloat(arrivalRate)
     if (isNaN(lambda) || lambda <= 0) {
       alert("Please enter a valid positive arrival rate (λ).")
@@ -386,13 +392,13 @@ export default function Home() {
       </div>
 
       <div className="flex">
-        <StyledButton
+        {/* <StyledButton
           onClick={saveValues}
           color="#003F47" // hover
           background="#006775" // after click
         >
           Save
-        </StyledButton>
+        </StyledButton> */}
 
         <StyledButton
           onClick={generatePriorityTable}
@@ -436,7 +442,17 @@ export default function Home() {
             </tbody>
           </table>
 
-          {/* <table className="w-full mt-4 mb-7 text-left">
+          <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
+            <Priority TableLength={cpValues.length} />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+{
+  /* <table className="w-full mt-4 mb-7 text-left">
             <tr>
               <th className="text-left text-white px-4">Metric</th>
               <th className="text-white px-4">Value</th>
@@ -475,12 +491,5 @@ export default function Home() {
               </td>
               <td className="px-4">{avgCustomersInSystem.toFixed(2)}</td>
             </tr>
-          </table> */}
-          <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
-            <Priority TableLength={cpValues.length} />
-          </div>
-        </div>
-      )}
-    </div>
-  )
+          </table> */
 }
