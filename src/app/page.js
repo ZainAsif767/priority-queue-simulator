@@ -239,6 +239,7 @@ export default function Home() {
 
   const [utilizationFactor, setutilizationFactor] = useState(0)
   const [avgTimeInSystem, setavgTimeInSystem] = useState(0)
+  const [Idle, setIdle] = useState(0)
   const [avgTimeInQueue, setavgTimeInQueue] = useState(0)
   const [avgCustomersInQueue, setavgCustomersInQueue] = useState(0)
   const [avgCustomersInSystem, setavgCustomersInSystem] = useState(0)
@@ -371,7 +372,7 @@ export default function Home() {
       // setendTime(prev => [...prev, endTime])
       // Calculate turnaround time
       const r2 = End_Time[i] - ArrivalTimes[i]
-      turnaround_Time.push(r2)
+      turnaround_Time.push(r2 > 0 ? r2 : -r2)
       // setTurnaroundTime(prev => [...prev, turnaroundTime])
 
       // console.log("serTime[i]", serTime[i])
@@ -379,11 +380,11 @@ export default function Home() {
       // Calculate wait time
       // const r3 = serTime[i] - turnaround_Time[i]
       const r3 = startTime - ArrivalTimes[i]
-      wait_Time.push(r3)
+      wait_Time.push(r3 > 0 ? r3 : -r3)
       // setWaitTime(prev => [...prev, waitTime])
       // Calculate response time
       const r4 = wait_Time[i] + serTime[i]
-      response_Time.push(r4)
+      response_Time.push(r4 > 0 ? r4 : -r4)
       // setResponseTime(prev => [...prev, responseTime])
       // Update the total wait and turnaround times
       totalWaitTime += wait_Time[i]
@@ -415,8 +416,25 @@ export default function Home() {
     setTableGenerated(true)
 
     // Calculate Utilization Factor (ρ)
-    setutilizationFactor(parseFloat(arrivalRate) / parseFloat(serviceRate))
+    const utilizationFactor = parseFloat(arrivalRate) / parseFloat(serviceRate)
+    setutilizationFactor(utilizationFactor)
+    // Number in the Queue
+    const Lq =
+      (parseFloat(utilizationFactor) ^ 2) / (1 - parseFloat(utilizationFactor))
+    setavgCustomersInQueue(Lq)
+    // Wait in the Queue
+    const Wq = Lq / parseFloat(arrivalRate)
+    setavgTimeInQueue(Wq)
+    // Wait in the System
+    const W = Wq + 1 / parseFloat(serviceRate)
+    setavgTimeInSystem(W)
 
+    // Number in the System
+    const L = W * parseFloat(arrivalRate)
+    setavgCustomersInSystem(L)
+
+    const idle = 1 - utilizationFactor
+    setIdle(idle)
     // Calculate Average Time a Customer Spends in the System (W)
     // setavgTimeInSystem(
     //   utilizationFactor > 0
@@ -424,18 +442,19 @@ export default function Home() {
     //     : 0
     // )
 
-    setavgTimeInSystem(1 / (parseFloat(serviceRate) - parseFloat(arrivalRate)))
+    // setavgTimeInSystem(1 / (parseFloat(serviceRate) - parseFloat(arrivalRate)))
 
     // Calculate Average Time a Customer Spends Waiting in the Queue (Wq)
     // setavgTimeInQueue(
     //   utilizationFactor > 0 ? avgTimeInSystem - 1 / parseFloat(serviceRate) : 0
     // )
 
-    setavgTimeInQueue(avgTimeInSystem - 1 / parseFloat(serviceRate))
+    // setavgTimeInQueue(avgTimeInSystem - 1 / parseFloat(serviceRate))
     // Calculate Average Number of Customers in the Queue (Lq)
-    setavgCustomersInQueue(parseFloat(arrivalRate) * avgTimeInQueue)
+    //   setavgCustomersInQueue(parseFloat(arrivalRate) * avgTimeInQueue)
     // Calculate Average Number of Customers in the System (L)
-    setavgCustomersInSystem(parseFloat(arrivalRate) * avgTimeInSystem)
+    //    setavgCustomersInSystem(parseFloat(arrivalRate) * avgTimeInSystem)
+    // setavgCustomersInSystem(parseFloat(arrivalRate) * avgTimeInSystem)
   }
 
   const calculateFactorial = n => {
@@ -562,6 +581,54 @@ export default function Home() {
             </tbody>
           </table>
 
+          <div>
+            <table className="w-full mt-4 mb-7 text-left">
+              <tr>
+                <th className="text-left text-white px-4">Metric</th>
+                <th className="text-white px-4">Value</th>
+              </tr>
+              <tr>
+                <td className="text-left px-4"> Utilization Factor (ρ)</td>
+                <td className="px-4">{utilizationFactor.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td className="text-left px-4">
+                  {" "}
+                  Average Time a Customer Spends in the System (W){" "}
+                </td>
+                <td className="px-4">{avgTimeInSystem.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td className="text-left px-4">
+                  {" "}
+                  Average Time a Customer Spends Waiting in the Queue (Wq){" "}
+                </td>
+                <td className="px-4">{avgTimeInQueue.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td className="text-left px-4">
+                  {" "}
+                  Average Number of Customers in the Queue (Lq){" "}
+                </td>
+                <td className="px-4">{avgCustomersInQueue.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td className="text-left px-4">
+                  {" "}
+                  Average Number of Customers in the System (L){" "}
+                </td>
+                <td className="px-4">{avgCustomersInSystem.toFixed(2)}</td>
+              </tr>
+
+              <tr>
+                <td className="text-left px-4">
+                  {" "}
+                  Proportion of time the server is idle (Idle){" "}
+                </td>
+                <td className="px-4">{Idle.toFixed(2)}</td>
+              </tr>
+            </table>
+          </div>
           <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
             <Priority TableLength={cpValues.length} />
           </div>
