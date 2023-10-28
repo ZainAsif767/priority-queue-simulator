@@ -235,6 +235,10 @@ export default function Home() {
   const [WaitTime, setWaitTime] = useState([])
   const [ResponseTime, setResponseTime] = useState([])
 
+  const [avgTurnaroundTime, setavgTurnaroundTime] = useState(0)
+  const [avgWaitTime, setavgWaitTime] = useState(0)
+  const [avgResponseTime, setavgResponseTime] = useState(0)
+
   const [tableGenerated, setTableGenerated] = useState(false)
 
   const [utilizationFactor, setutilizationFactor] = useState(0)
@@ -330,10 +334,14 @@ export default function Home() {
     setArrivalTimes(ArrivalTimes)
 
     const serTime = []
-    for (let i = 0; i < cpLookupTable.length; i++) {
+    let TotalTurnaround = 0
+    let TotalWaitTime = 0
+    let TotalResponseTime = 0
+
+    for (let i = 0; i < cpLookupTable.length - 1; i++) {
       // const serviceTime = Math.ceil(-serviceRate * Math.log(Math.random()))
       const length = cpLookupTable.length
-      // console.log("cpLookupTable.length", cpLookupTable.length)
+      //  console.log("cpLookupTable.length", cpLookupTable.length)
 
       //      const length = cpLookupTable.length - 2
       const randomR = Math.round(Math.random() * length) // Generate a random number between 0 and 1
@@ -351,7 +359,7 @@ export default function Home() {
     // console.log("arrivalTimes.length", arrivalTimes.length)
     // console.log("serviceTimes", serviceTimes)
     let startTime = 0
-    for (let i = 0; i < cpLookupTable.length; i++) {
+    for (let i = 0; i < cpLookupTable.length - 1; i++) {
       //  console.log("currentTime", currentTime)
       //  console.log("arrivalTimes[i]", arrivalTimes[i])
       // const startTime = Math.max(currentTime, arrivalTimes[i])
@@ -391,9 +399,26 @@ export default function Home() {
       totalTurnaroundTime += turnaround_Time[i]
 
       // Update the current time for the next iteration
+
+      TotalTurnaround += turnaround_Time[i]
+      TotalResponseTime += response_Time[i]
+      TotalWaitTime += wait_Time[i]
+
       startTime = End_Time[i]
     }
+    console.log("TotalTurnaround", TotalTurnaround)
+    console.log("TotalResponseTime", TotalResponseTime)
+    console.log("TotalWaitTime ", TotalWaitTime)
+    // console.log("TotalTurnaround", TotalTurnaround)
+    // console.log("TotalResponseTime", TotalResponseTime)
+    // console.log("TotalWaitTime ", TotalWaitTime)
 
+    const AvgTurnaround = TotalTurnaround / (cpLookupTable.length - 1)
+    const AvgResponse = TotalResponseTime / (cpLookupTable.length - 1)
+    const AvgWaitTime = TotalWaitTime / (cpLookupTable.length - 1)
+    setavgTurnaroundTime(AvgTurnaround)
+    setavgResponseTime(AvgResponse)
+    setavgWaitTime(AvgWaitTime)
     // console.log("waitTime", wait_Time)
     // console.log("turnaroundTime", turnaround_Time)
     // console.log("endTime", End_Time)
@@ -608,28 +633,28 @@ export default function Home() {
                   {" "}
                   Average Time a Customer Spends in the System (W){" "}
                 </td>
-                <td className="px-4">{avgTimeInSystem.toFixed(4)}</td>
+                <td className="px-4">{avgTimeInSystem.toFixed(3)}</td>
               </tr>
               <tr>
                 <td className="text-left px-4">
                   {" "}
                   Average Time a Customer Spends Waiting in the Queue (Wq){" "}
                 </td>
-                <td className="px-4">{avgTimeInQueue.toFixed(4)}</td>
+                <td className="px-4">{avgTimeInQueue.toFixed(3)}</td>
               </tr>
               <tr>
                 <td className="text-left px-4">
                   {" "}
                   Average Number of Customers in the Queue (Lq){" "}
                 </td>
-                <td className="px-4">{avgCustomersInQueue.toFixed(4)}</td>
+                <td className="px-4">{avgCustomersInQueue.toFixed(3)}</td>
               </tr>
               <tr>
                 <td className="text-left px-4">
                   {" "}
                   Average Number of Customers in the System (L){" "}
                 </td>
-                <td className="px-4">{avgCustomersInSystem.toFixed(4)}</td>
+                <td className="px-4">{avgCustomersInSystem.toFixed(3)}</td>
               </tr>
 
               <tr>
@@ -638,6 +663,21 @@ export default function Home() {
                   Proportion of time the server is idle (Idle){" "}
                 </td>
                 <td className="px-4">{Idle.toFixed(2) * 100} %</td>
+              </tr>
+
+              <tr>
+                <td className="text-left px-4"> Average Turnaround Time</td>
+                <td className="px-4">{avgTurnaroundTime.toFixed(3)}</td>
+              </tr>
+
+              <tr>
+                <td className="text-left px-4"> Average Response Time</td>
+                <td className="px-4">{avgResponseTime.toFixed(3)}</td>
+              </tr>
+
+              <tr>
+                <td className="text-left px-4"> Average Waiting Time</td>
+                <td className="px-4">{avgWaitTime.toFixed(3)}</td>
               </tr>
             </table>
           </div>
