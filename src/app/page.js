@@ -13,96 +13,241 @@ import {
 import StyledButton from "@/components/Button"
 import CssTextField from "@/components/TextField"
 
-const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
-  const [tableData, setTableData] = useState([])
-  const [priority, setpriority] = useState([])
+// const PriorityTable = ({ A, a, b, z0, M, C, Length }) => {
+//   const [tableData, setTableData] = useState([])
+//   const [priority, setpriority] = useState([])
+//   const [tableGenerated, setTableGenerated] = useState(false)
+
+//   function mod(a, b) {
+//     return ((a % b) + b) % b
+//   }
+
+//   const generateTableData = () => {
+//     const data = []
+//     let Z = z0
+
+//     const e = mod(556169139, 1994)
+//     // console.log("mod = ", e)
+
+//     for (let i = 1; i <= Length.TableLength; i++) {
+//       // const R = (A * Z + C) % M
+//       let R = 0
+
+//       const calc1 = A * Z
+//       const calc2 = parseInt(calc1) + parseInt(C)
+
+//       R = mod(calc2, parseInt(M))
+
+//       const randomNumber = Math.random()
+//       const Y = (b - a) * randomNumber + a
+//       const roundOff = Math.round(Y)
+
+//       data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
+//       Z = R
+
+//       // console.log("calc2 = ", calc2)
+//       // console.log("M = ", parseInt(M))
+//       // console.log("A = ", A)
+//       // console.log("Z = ", Z)
+//       // console.log("C = ", C)
+//       // console.log("R = ", R)
+//     }
+
+//     setTableData(data)
+//     setTableGenerated(true)
+//   }
+
+//   return (
+//     <div>
+//       <div className=" flex justify-center  items-center">
+//         <StyledButton
+//           onClick={generateTableData}
+//           color="#004021"
+//           background="#076638"
+//         >
+//           Submit
+//         </StyledButton>
+//       </div>
+
+//       {tableGenerated && (
+//         <>
+//           <h1 className="text-2xl font-medium">Priority Table</h1>
+//           <table className="w-full mt-4 mb-7 text-left">
+//             <thead>
+//               <tr>
+//                 <th className="px-4">Serial No</th>
+//                 <th className="px-4">Z iteration</th>
+//                 <th className="px-4">R</th>
+//                 <th className="px-4">Random Number</th>
+//                 <th className="px-4">Priority</th>
+//                 <th className="px-4">Priority Round Off</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {tableData.map(row => (
+//                 <tr key={row.serialNo}>
+//                   <td className="px-4">{row.serialNo}</td>
+//                   <td className="px-4">{row.Z}</td>
+//                   <td className="px-4">{row.R}</td>
+//                   <td className="px-4">{row.randomNumber.toFixed(6)}</td>
+//                   <td className="px-4">{row.Y}</td>
+//                   <td className="px-4">{row.roundOff}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </>
+//       )}
+//     </div>
+//   )
+// }
+
+// function Priority(TableLength) {
+//   const [A, setA] = useState(55)
+//   const [a, seta] = useState(1)
+//   const [b, setb] = useState(3)
+//   const [z0, setz0] = useState(10112166)
+//   const [M, setM] = useState(1994)
+//   const [C, setC] = useState(9)
+
+//   const handleA = e => {
+//     setA(parseFloat(e.target.value))
+//   }
+
+//   const handleb = e => {
+//     setb(e.target.value)
+//   }
+
+//   const handlea = e => {
+//     seta(e.target.value)
+//   }
+
+//   const handleC = e => {
+//     setC(e.target.value)
+//   }
+
+//   const handleM = e => {
+//     setM(e.target.value)
+//   }
+
+//   const handleZ0 = e => {
+//     setz0(e.target.value)
+//   }
+
+//   return (
+//     <>
+//       <h1 className="text-2xl font-medium">Priority Inputs</h1>
+
+//       <div className=" flex font-medium space-x-12 ">
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="A"
+//             variant="outlined"
+//             type="number"
+//             value={A}
+//             onChange={handleA}
+//           />
+//           <p>A</p>
+//         </div>
+
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="M"
+//             variant="outlined"
+//             type="number"
+//             value={M}
+//             onChange={handleM}
+//           />
+//           <p>M</p>
+//         </div>
+
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="Z0"
+//             variant="outlined"
+//             type="number"
+//             value={z0}
+//             onChange={handleZ0}
+//           />
+//           <p>Z0</p>
+//         </div>
+//       </div>
+
+//       <div className=" flex font-medium space-x-12 ">
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="C"
+//             variant="outlined"
+//             type="number"
+//             value={C}
+//             onChange={handleC}
+//           />
+//           <p>C</p>
+//         </div>
+
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="a"
+//             variant="outlined"
+//             type="number"
+//             value={a}
+//             onChange={handlea}
+//           />
+//           <p>a</p>
+//         </div>
+
+//         <div className=" flex-col ">
+//           <CssTextField
+//             label="b"
+//             variant="outlined"
+//             type="number"
+//             value={b}
+//             onChange={handleb}
+//           />
+//           <p>b</p>
+//         </div>
+//       </div>
+
+//       <PriorityTable
+//         A={A}
+//         a={a}
+//         b={b}
+//         z0={z0}
+//         M={M}
+//         C={C}
+//         Length={TableLength}
+//       />
+//     </>
+//   )
+// }
+
+export default function Home() {
+  const [arrivalRate, setArrivalRate] = useState(0)
+  const [serviceRate, setServiceRate] = useState(0)
+  const [cpValues, setCpValues] = useState([])
+  const [cpLookupTable, setCpLookupTable] = useState([])
+  const [interArrivalTimes, setInterArrivalTimes] = useState([])
+  const [arrivalTimes, setArrivalTimes] = useState([])
+  const [serviceTimes, setServiceTimes] = useState([])
+  const [startTimes, setstartTimes] = useState([])
+  const [endTime, setendTime] = useState([])
+  const [TurnaroundTime, setTurnaroundTime] = useState([])
+  const [WaitTime, setWaitTime] = useState([])
+  const [ResponseTime, setResponseTime] = useState([])
+
+  const [avgTurnaroundTime, setavgTurnaroundTime] = useState(0)
+  const [avgWaitTime, setavgWaitTime] = useState(0)
+  const [avgResponseTime, setavgResponseTime] = useState(0)
+
   const [tableGenerated, setTableGenerated] = useState(false)
 
-  function mod(a, b) {
-    return ((a % b) + b) % b
-  }
+  const [utilizationFactor, setutilizationFactor] = useState(0)
+  const [avgTimeInSystem, setavgTimeInSystem] = useState(0)
+  const [Idle, setIdle] = useState(0)
+  const [avgTimeInQueue, setavgTimeInQueue] = useState(0)
+  const [avgCustomersInQueue, setavgCustomersInQueue] = useState(0)
+  const [avgCustomersInSystem, setavgCustomersInSystem] = useState(0)
 
-  const generateTableData = () => {
-    const data = []
-    let Z = z0
-
-    const e = mod(556169139, 1994)
-    // console.log("mod = ", e)
-
-    for (let i = 1; i <= Length.TableLength; i++) {
-      // const R = (A * Z + C) % M
-      let R = 0
-
-      const calc1 = A * Z
-      const calc2 = parseInt(calc1) + parseInt(C)
-
-      R = mod(calc2, parseInt(M))
-
-      const randomNumber = Math.random()
-      const Y = (b - a) * randomNumber + a
-      const roundOff = Math.round(Y)
-
-      data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
-      Z = R
-
-      // console.log("calc2 = ", calc2)
-      // console.log("M = ", parseInt(M))
-      // console.log("A = ", A)
-      // console.log("Z = ", Z)
-      // console.log("C = ", C)
-      // console.log("R = ", R)
-    }
-
-    setTableData(data)
-    setTableGenerated(true)
-  }
-
-  return (
-    <div>
-      <div className=" flex justify-center  items-center">
-        <StyledButton
-          onClick={generateTableData}
-          color="#004021"
-          background="#076638"
-        >
-          Submit
-        </StyledButton>
-      </div>
-
-      {tableGenerated && (
-        <>
-          <h1 className="text-2xl font-medium">Priority Table</h1>
-          <table className="w-full mt-4 mb-7 text-left">
-            <thead>
-              <tr>
-                <th className="px-4">Serial No</th>
-                <th className="px-4">Z iteration</th>
-                <th className="px-4">R</th>
-                <th className="px-4">Random Number</th>
-                <th className="px-4">Priority</th>
-                <th className="px-4">Priority Round Off</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map(row => (
-                <tr key={row.serialNo}>
-                  <td className="px-4">{row.serialNo}</td>
-                  <td className="px-4">{row.Z}</td>
-                  <td className="px-4">{row.R}</td>
-                  <td className="px-4">{row.randomNumber.toFixed(6)}</td>
-                  <td className="px-4">{row.Y}</td>
-                  <td className="px-4">{row.roundOff}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
-    </div>
-  )
-}
-
-function Priority(TableLength) {
   const [A, setA] = useState(55)
   const [a, seta] = useState(1)
   const [b, setb] = useState(3)
@@ -133,120 +278,6 @@ function Priority(TableLength) {
   const handleZ0 = e => {
     setz0(e.target.value)
   }
-
-  return (
-    <>
-      <h1 className="text-2xl font-medium">Priority Inputs</h1>
-
-      <div className=" flex font-medium space-x-12 ">
-        <div className=" flex-col ">
-          <CssTextField
-            label="A"
-            variant="outlined"
-            type="number"
-            value={A}
-            onChange={handleA}
-          />
-          <p>A</p>
-        </div>
-
-        <div className=" flex-col ">
-          <CssTextField
-            label="M"
-            variant="outlined"
-            type="number"
-            value={M}
-            onChange={handleM}
-          />
-          <p>M</p>
-        </div>
-
-        <div className=" flex-col ">
-          <CssTextField
-            label="Z0"
-            variant="outlined"
-            type="number"
-            value={z0}
-            onChange={handleZ0}
-          />
-          <p>Z0</p>
-        </div>
-      </div>
-
-      <div className=" flex font-medium space-x-12 ">
-        <div className=" flex-col ">
-          <CssTextField
-            label="C"
-            variant="outlined"
-            type="number"
-            value={C}
-            onChange={handleC}
-          />
-          <p>C</p>
-        </div>
-
-        <div className=" flex-col ">
-          <CssTextField
-            label="a"
-            variant="outlined"
-            type="number"
-            value={a}
-            onChange={handlea}
-          />
-          <p>a</p>
-        </div>
-
-        <div className=" flex-col ">
-          <CssTextField
-            label="b"
-            variant="outlined"
-            type="number"
-            value={b}
-            onChange={handleb}
-          />
-          <p>b</p>
-        </div>
-      </div>
-
-      <PriorityTable
-        A={A}
-        a={a}
-        b={b}
-        z0={z0}
-        M={M}
-        C={C}
-        Length={TableLength}
-      />
-    </>
-  )
-}
-
-export default function Home() {
-  const [arrivalRate, setArrivalRate] = useState(0)
-  const [serviceRate, setServiceRate] = useState(0)
-  const [cpValues, setCpValues] = useState([])
-  const [cpLookupTable, setCpLookupTable] = useState([])
-  const [interArrivalTimes, setInterArrivalTimes] = useState([])
-  const [arrivalTimes, setArrivalTimes] = useState([])
-  const [serviceTimes, setServiceTimes] = useState([])
-  const [startTimes, setstartTimes] = useState([])
-  const [endTime, setendTime] = useState([])
-  const [TurnaroundTime, setTurnaroundTime] = useState([])
-  const [WaitTime, setWaitTime] = useState([])
-  const [ResponseTime, setResponseTime] = useState([])
-
-  const [avgTurnaroundTime, setavgTurnaroundTime] = useState(0)
-  const [avgWaitTime, setavgWaitTime] = useState(0)
-  const [avgResponseTime, setavgResponseTime] = useState(0)
-
-  const [tableGenerated, setTableGenerated] = useState(false)
-
-  const [utilizationFactor, setutilizationFactor] = useState(0)
-  const [avgTimeInSystem, setavgTimeInSystem] = useState(0)
-  const [Idle, setIdle] = useState(0)
-  const [avgTimeInQueue, setavgTimeInQueue] = useState(0)
-  const [avgCustomersInQueue, setavgCustomersInQueue] = useState(0)
-  const [avgCustomersInSystem, setavgCustomersInSystem] = useState(0)
 
   const handleArrivalRateChange = e => {
     setArrivalRate(e.target.value)
@@ -409,9 +440,6 @@ export default function Home() {
     console.log("TotalTurnaround", TotalTurnaround)
     console.log("TotalResponseTime", TotalResponseTime)
     console.log("TotalWaitTime ", TotalWaitTime)
-    // console.log("TotalTurnaround", TotalTurnaround)
-    // console.log("TotalResponseTime", TotalResponseTime)
-    // console.log("TotalWaitTime ", TotalWaitTime)
 
     const AvgTurnaround = TotalTurnaround / (cpLookupTable.length - 1)
     const AvgResponse = TotalResponseTime / (cpLookupTable.length - 1)
@@ -419,25 +447,13 @@ export default function Home() {
     setavgTurnaroundTime(AvgTurnaround)
     setavgResponseTime(AvgResponse)
     setavgWaitTime(AvgWaitTime)
-    // console.log("waitTime", wait_Time)
-    // console.log("turnaroundTime", turnaround_Time)
-    // console.log("endTime", End_Time)
-    // console.log("responseTime", response_Time)
-    // console.log("startTimes", start_Time)
+
     setstartTimes(start_Time)
     setWaitTime(wait_Time)
     setTurnaroundTime(turnaround_Time)
     setendTime(End_Time)
     setResponseTime(response_Time)
-
-    // console.log("arrivalRate ", arrivalRate)
-    // console.log("serviceRate ", serviceRate)
-    // console.log("cpValues", cpValues)
-    // console.log("cpLookupTable ", cpLookupTable)
-    // console.log("interArrivalTimes ", interArrivalTimes)
-    // console.log("arrivalTimes ", arrivalTimes)
-    // console.log("serviceTimes ", serviceTimes)
-    // console.log("tableGenerated ", tableGenerated)
+    generateTableData()
     setTableGenerated(true)
 
     // Calculate Utilization Factor (ρ)
@@ -448,11 +464,7 @@ export default function Home() {
     const Lq =
       Math.pow(parseFloat(utilizationFactor), 2) /
       (1 - parseFloat(utilizationFactor))
-    // console.log(
-    //   "Math.pow(utilizationFactor, 2)",
-    //   Math.pow(parseFloat(utilizationFactor), 2)
-    // )
-    // console.log("(1 - utilizationFactor)", 1 - parseFloat(utilizationFactor))
+
     console.log(
       "LQ = ",
       Math.pow(parseFloat(utilizationFactor), 2) /
@@ -472,26 +484,6 @@ export default function Home() {
 
     const idle = 1 - utilizationFactor
     setIdle(idle)
-    // Calculate Average Time a Customer Spends in the System (W)
-    // setavgTimeInSystem(
-    //   utilizationFactor > 0
-    //     ? 1 / (parseFloat(serviceRate) - parseFloat(arrivalRate))
-    //     : 0
-    // )
-
-    // setavgTimeInSystem(1 / (parseFloat(serviceRate) - parseFloat(arrivalRate)))
-
-    // Calculate Average Time a Customer Spends Waiting in the Queue (Wq)
-    // setavgTimeInQueue(
-    //   utilizationFactor > 0 ? avgTimeInSystem - 1 / parseFloat(serviceRate) : 0
-    // )
-
-    // setavgTimeInQueue(avgTimeInSystem - 1 / parseFloat(serviceRate))
-    // Calculate Average Number of Customers in the Queue (Lq)
-    //   setavgCustomersInQueue(parseFloat(arrivalRate) * avgTimeInQueue)
-    // Calculate Average Number of Customers in the System (L)
-    //    setavgCustomersInSystem(parseFloat(arrivalRate) * avgTimeInSystem)
-    // setavgCustomersInSystem(parseFloat(arrivalRate) * avgTimeInSystem)
   }
 
   const calculateFactorial = n => {
@@ -502,15 +494,88 @@ export default function Home() {
     }
     return factorial
   }
+  const [tableData, setTableData] = useState([])
+  const [priority, setpriority] = useState([])
 
+  function mod(a, b) {
+    return ((a % b) + b) % b
+  }
+
+  const generateTableData = () => {
+    const data = []
+    let Z = z0
+
+    const e = mod(556169139, 1994)
+    // console.log("mod = ", e)
+
+    for (let i = 1; i <= cpLookupTable.length - 1; i++) {
+      // const R = (A * Z + C) % M
+      let R = 0
+
+      const calc1 = A * Z
+      const calc2 = parseInt(calc1) + parseInt(C)
+
+      R = mod(calc2, parseInt(M))
+
+      const randomNumber = Math.random()
+      const Y = (b - a) * randomNumber + a
+      const roundOff = Math.round(Y)
+
+      data.push({ serialNo: i, Z, R, randomNumber, Y, roundOff })
+      Z = R
+
+      // console.log("calc2 = ", calc2)
+      // console.log("M = ", parseInt(M))
+      // console.log("A = ", A)
+      // console.log("Z = ", Z)
+      // console.log("C = ", C)
+      // console.log("R = ", R)
+    }
+
+    setTableData(data)
+  }
   return (
     <div className=" flex flex-col  justify-center items-center space-y-8 mt-4">
       <div className=" justify-center">
-        <h1 className="text-3xl font-bold text-[]">M/M/1 Simulator</h1>
+        <h1 className="text-3xl font-bold text-[]">M/M/1 Priority Simulator</h1>
       </div>
 
       {/* Inputs */}
+
       <div className=" flex font-medium space-x-12 ">
+        <div className=" flex-col ">
+          <CssTextField
+            label="A"
+            variant="outlined"
+            type="number"
+            value={A}
+            onChange={handleA}
+          />
+          <p>A</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="M"
+            variant="outlined"
+            type="number"
+            value={M}
+            onChange={handleM}
+          />
+          <p>M</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="Z0"
+            variant="outlined"
+            type="number"
+            value={z0}
+            onChange={handleZ0}
+          />
+          <p>Z0</p>
+        </div>
+
         <div className=" flex-col ">
           <CssTextField
             label="lambda λ"
@@ -521,7 +586,41 @@ export default function Home() {
           />
           <p>Arrival Rate</p>
         </div>
+      </div>
 
+      <div className=" flex font-medium space-x-12 ">
+        <div className=" flex-col ">
+          <CssTextField
+            label="C"
+            variant="outlined"
+            type="number"
+            value={C}
+            onChange={handleC}
+          />
+          <p>C</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="a"
+            variant="outlined"
+            type="number"
+            value={a}
+            onChange={handlea}
+          />
+          <p>a</p>
+        </div>
+
+        <div className=" flex-col ">
+          <CssTextField
+            label="b"
+            variant="outlined"
+            type="number"
+            value={b}
+            onChange={handleb}
+          />
+          <p>b</p>
+        </div>
         <div className=" flex-col ">
           <CssTextField
             label="mu µ"
@@ -533,6 +632,29 @@ export default function Home() {
           <p>Service Rate</p>
         </div>
       </div>
+      {/* <div className=" flex font-medium space-x-12 "> */}
+      {/* <div className=" flex-col ">
+          <CssTextField
+            label="lambda λ"
+            variant="outlined"
+            type="number"
+            value={arrivalRate}
+            onChange={handleArrivalRateChange}
+          />
+          <p>Arrival Rate</p>
+        </div> */}
+
+      {/* <div className=" flex-col ">
+          <CssTextField
+            label="mu µ"
+            variant="outlined"
+            type="number"
+            value={serviceRate}
+            onChange={handleServiceRateChange}
+          />
+          <p>Service Rate</p>
+        </div> */}
+      {/* </div> */}
 
       <div className="flex">
         <StyledButton
@@ -618,6 +740,34 @@ export default function Home() {
             </tbody>
           </table>
 
+          <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
+            <h1 className="text-2xl font-medium">Priority Table</h1>
+            <table className="w-full mt-4 mb-7 text-left">
+              <thead>
+                <tr>
+                  <th className="px-4">Serial No</th>
+                  <th className="px-4">Z iteration</th>
+                  <th className="px-4">R</th>
+                  <th className="px-4">Random Number</th>
+                  <th className="px-4">Priority</th>
+                  <th className="px-4">Priority Round Off</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.map(row => (
+                  <tr key={row.serialNo}>
+                    <td className="px-4">{row.serialNo}</td>
+                    <td className="px-4">{row.Z}</td>
+                    <td className="px-4">{row.R}</td>
+                    <td className="px-4">{row.randomNumber.toFixed(6)}</td>
+                    <td className="px-4">{row.Y}</td>
+                    <td className="px-4">{row.roundOff}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <div>
             <table className="w-full mt-4 mb-7 text-left">
               <tr>
@@ -681,9 +831,9 @@ export default function Home() {
               </tr>
             </table>
           </div>
-          <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
+          {/* <div className=" flex flex-col  justify-center items-center space-y-4 mt-4 mb-12">
             <Priority TableLength={cpValues.length} />
-          </div>
+          </div> */}
         </div>
       )}
     </div>
